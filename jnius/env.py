@@ -68,7 +68,7 @@ def get_java_setup(platform=DEFAULT_PLATFORM):
     if isinstance(JAVA_HOME, bytes):
         JAVA_HOME = JAVA_HOME.decode('utf-8')
 
-    log.debug("Identified Java at %s" % JAVA_HOME)
+    log.debug(f"Identified Java at {JAVA_HOME}")
 
     # Remove /bin if it's appended to JAVA_HOME
     if JAVA_HOME[-3:] == 'bin':
@@ -79,12 +79,12 @@ def get_java_setup(platform=DEFAULT_PLATFORM):
     if platform == "win32": #only this?
         return WindowsJavaLocation(platform, JAVA_HOME)
     if platform == "darwin": #only this?
-        return MacOsXJavaLocation(platform, JAVA_HOME)    
+        return MacOsXJavaLocation(platform, JAVA_HOME)
     if 'bsd' in platform:
         return BSDJavaLocation(platform, JAVA_HOME)
     if platform in ('linux', 'linux2', 'sunos5'): #only this?
         return UnixJavaLocation(platform, JAVA_HOME)
-    log.warning("warning: unknown platform %s assuming linux or sunOS" % platform)
+    log.warning(f"warning: unknown platform {platform} assuming linux or sunOS")
     return UnixJavaLocation(platform, JAVA_HOME)
 
 
@@ -141,13 +141,12 @@ class JavaLocation:
         '''
         pass
 
-    def get_jnius_lib_location(self): 
+    def get_jnius_lib_location(self):
         '''
             Returns the full path of the Java library for runtime binding with.
             Can be overridden by using JVM_PATH env var to set absolute path of the Java library
         '''
-        libjvm_override_path = getenv('JVM_PATH')
-        if libjvm_override_path:
+        if libjvm_override_path := getenv('JVM_PATH'):
             log.info(
                 dedent("""
                     Using override env var JVM_PATH (%s) to load libjvm.
@@ -170,8 +169,8 @@ class JavaLocation:
                 log.debug("found libjvm.so at %s", full_lib_location)
                 return full_lib_location
 
-        raise RuntimeError(
-        """
+            raise RuntimeError(
+            """
         Unable to find libjvm.so, (tried %s)
         you can use the JVM_PATH env variable with the absolute path
         to libjvm.so to override this lookup, if you know
@@ -182,8 +181,8 @@ class JavaLocation:
             export JVM_PATH=/usr/lib/jvm/java-8-oracle/jre/lib/amd64/server/libjvm.so
             # run your program
         """
-        % [join(self.home, loc) for loc in lib_locations]
-    )
+            % [join(self.home, loc) for loc in lib_locations]
+        )
 
     def _possible_lib_locations(self):
         '''
@@ -195,7 +194,7 @@ class JavaLocation:
 
 class WindowsJavaLocation(JavaLocation):
     def get_javac(self):
-        return super().get_javac() + ".exe"
+        return f"{super().get_javac()}.exe"
 
     def get_libraries(self):
         return ['jvm']
@@ -227,8 +226,8 @@ class UnixJavaLocation(JavaLocation):
 
         return [
             'lib/server/libjvm.so',
-            'jre/lib/{}/default/libjvm.so'.format(cpu),
-            'jre/lib/{}/server/libjvm.so'.format(cpu),
+            f'jre/lib/{cpu}/default/libjvm.so',
+            f'jre/lib/{cpu}/server/libjvm.so',
         ]
 
 
@@ -250,8 +249,8 @@ class BSDJavaLocation(JavaLocation):
 
         return [
             'lib/server/libjvm.so',
-            'jre/lib/{}/default/libjvm.so'.format(cpu),
-            'jre/lib/{}/server/libjvm.so'.format(cpu),
+            f'jre/lib/{cpu}/default/libjvm.so',
+            f'jre/lib/{cpu}/server/libjvm.so',
         ]
 
 
@@ -319,7 +318,7 @@ def get_jre_home(platform):
         # didnt find java command on the path, we can
         # fallback to hunting in some default unix locations
         for loc in ["/usr/java/latest/", "/usr/java/default/", "/usr/lib/jvm/default-java/"]: 
-            if exists(loc + "bin/java"):
+            if exists(f"{loc}bin/java"):
                 jre_home = loc
                 break
 
@@ -350,10 +349,7 @@ def get_jdk_home(platform):
             except TypeError:
                 raise Exception('Unable to find javac')
 
-    if not jdk_home or not exists(jdk_home):
-        return None
-
-    return jdk_home
+    return None if not jdk_home or not exists(jdk_home) else jdk_home
 
 
 def get_osx_framework():

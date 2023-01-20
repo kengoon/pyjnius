@@ -14,7 +14,7 @@ class TestJVMOptions:
         reason='JNIus on Android does not take JVM options'
     )
     def test_jvm_options(self):
-        options = ['-Dtest.var{}=value'.format(i) for i in range(40)]
+        options = [f'-Dtest.var{i}=value' for i in range(40)]
         process = subprocess.Popen([sys.executable, '-c', textwrap.dedent(
             '''\
             import jnius_config

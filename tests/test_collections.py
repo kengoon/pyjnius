@@ -35,7 +35,7 @@ class TestCollections(unittest.TestCase):
         # __len__
         self.assertEqual(len(data), len(hmap))
         # __contains__
-        for k,v in data.items():
+        for k in data:
             self.assertTrue(k in hmap)
             self.assertEqual(data[k], hmap[k])
         # __iter__

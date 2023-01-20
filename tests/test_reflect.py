@@ -13,7 +13,7 @@ def identify_hierarchy_dict(cls, level, concrete=True):
 class ReflectTest(unittest.TestCase):
 
     def assertContains(self, d, clsName):
-        self.assertTrue(clsName in d, clsName + " was not found in " + str(d))
+        self.assertTrue(clsName in d, f"{clsName} was not found in {str(d)}")
 
     def test_hierharchy_queue(self):
         d = identify_hierarchy_dict(find_javaclass("java.util.Queue"), 0, False)
@@ -100,5 +100,5 @@ class ReflectTest(unittest.TestCase):
         words = ArrayList()
         words.add('hello')
         words.add('world')
-        self.assertEqual(['hello', 'world'], [word for word in words])
+        self.assertEqual(['hello', 'world'], list(words))
 

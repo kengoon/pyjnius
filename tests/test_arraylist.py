@@ -11,7 +11,7 @@ class ArrayListTest(unittest.TestCase):
         for arg in args:
             alist.add(arg)
         self.assertEqual(len(args), len(alist))
-        for idx, arg in enumerate(args):
+        for arg in args:
             self.assertTrue(arg in alist)
         del(alist[1])
         del(alist[0])
