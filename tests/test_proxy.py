@@ -33,8 +33,7 @@ class _TestImplemIterator(PythonJavaClass):
     @java_method('()Ljava/lang/Object;')
     def previous(self):
         self.index -= 1
-        obj = self.collection.data[self.index]
-        return obj
+        return self.collection.data[self.index]
 
     @java_method('()I')
     def previousIndex(self):
@@ -62,8 +61,7 @@ class _TestImplem(PythonJavaClass):
 
     @java_method('()Ljava/util/Iterator;')
     def iterator(self):
-        it = _TestImplemIterator(self)
-        return it
+        return _TestImplemIterator(self)
 
     @java_method('()Ljava/lang/String;')
     def toString(self):
@@ -89,14 +87,12 @@ class _TestImplem(PythonJavaClass):
 
     @java_method('()Ljava/util/ListIterator;')
     def listIterator(self):
-        it = _TestImplemIterator(self)
-        return it
+        return _TestImplemIterator(self)
 
     @java_method('(I)Ljava/util/ListIterator;',
                          name='ListIterator')
     def listIteratorI(self, index):
-        it = _TestImplemIterator(self, index)
-        return it
+        return _TestImplemIterator(self, index)
 
 
 class _TestBadSignature(PythonJavaClass):

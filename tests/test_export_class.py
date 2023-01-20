@@ -49,13 +49,11 @@ class ExportClassTest(unittest.TestCase):
 
     def assertIsSubclass(self, cls, parent):
         if not issubclass(cls, parent):
-            self.fail("%s is not a subclass of %s" %
-                      (cls.__name__, parent.__name__))
+            self.fail(f"{cls.__name__} is not a subclass of {parent.__name__}")
 
     def assertNotIsSubclass(self, cls, parent):
         if issubclass(cls, parent):
-            self.fail("%s is a subclass of %s" %
-                      (cls.__name__, parent.__name__))
+            self.fail(f"{cls.__name__} is a subclass of {parent.__name__}")
 
     def test_is_subclass(self):
         self.assertIsSubclass(Thread, Runnable)

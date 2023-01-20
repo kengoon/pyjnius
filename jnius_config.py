@@ -3,11 +3,7 @@ __all__ = ('set_options', 'add_options', 'get_options',
            'expand_classpath')
 
 import platform
-if platform.system() == 'Windows':
-    split_char = ';'
-else:
-    split_char = ':'
-
+split_char = ';' if platform.system() == 'Windows' else ':'
 vm_running = False
 vm_started_at = None
 options = []
@@ -17,7 +13,9 @@ classpath = None
 def check_vm_running():
     """Raises a ValueError if the VM is already running."""
     if vm_running:
-        raise ValueError("VM is already running, can't set classpath/options; VM started at" + vm_started_at)
+        raise ValueError(
+            f"VM is already running, can't set classpath/options; VM started at{vm_started_at}"
+        )
 
 
 def set_options(*opts):
@@ -92,5 +90,5 @@ def expand_classpath():
         if not path.endswith('*'):
             paths.append(path)
         else:
-            paths.extend(glob(path + '.[Jj][Aa][Rr]'))
+            paths.extend(glob(f'{path}.[Jj][Aa][Rr]'))
     return split_char.join(paths)

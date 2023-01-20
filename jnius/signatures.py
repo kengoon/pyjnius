@@ -46,11 +46,15 @@ class _JavaSignaturePrimitive(object):
 
 
 def _MakeSignaturePrimitive(name, spec):
+
+
+
     class __Primitive(_JavaSignaturePrimitive):
-        ''' PyJnius signature for Java %s type ''' % name
+        f''' PyJnius signature for Java {name} type '''
         _name = name
         _spec = spec
-    __Primitive.__name__ = "j" + name
+
+    __Primitive.__name__ = f"j{name}"
 
     return __Primitive
 
@@ -70,7 +74,7 @@ def JArray(of_type):
     ''' Signature helper for identifying arrays of a given object or
     primitive type. '''
 
-    spec = "[" + _jni_type_spec(of_type)
+    spec = f"[{_jni_type_spec(of_type)}"
     return _MakeSignaturePrimitive("array", spec)
 
 
@@ -86,10 +90,7 @@ def signature(returns, takes):
     ''' Produces a JNI method signature, taking the provided arguments
     and returning the given return type. '''
 
-    out_takes = []
-    for arg in takes:
-        out_takes.append(_jni_type_spec(arg))
-
+    out_takes = [_jni_type_spec(arg) for arg in takes]
     return "(" + "".join(out_takes) + ")" + _jni_type_spec(returns)
 
 
@@ -100,6 +101,6 @@ def _jni_type_spec(jclass):
     '''
 
     if issubclass(jclass, JavaClass):
-        return "L" + jclass.__javaclass__ + ";"
+        return f"L{jclass.__javaclass__};"
     elif issubclass(jclass, _JavaSignaturePrimitive):
         return jclass._spec

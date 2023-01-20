@@ -34,8 +34,7 @@ class _TestImplemIterator(PythonJavaClass):
     @with_signature(JObject, [])
     def previous(self):
         self.index -= 1
-        obj = self.collection.data[self.index]
-        return obj
+        return self.collection.data[self.index]
 
     @with_signature(jint, [])
     def previousIndex(self):
@@ -63,8 +62,7 @@ class _TestImplem(PythonJavaClass):
 
     @with_signature(autoclass("java.util.Iterator"), [])
     def iterator(self):
-        it = _TestImplemIterator(self)
-        return it
+        return _TestImplemIterator(self)
 
     @with_signature(JString, [])
     def toString(self):
@@ -90,15 +88,13 @@ class _TestImplem(PythonJavaClass):
 
     @with_signature(JListIterator, [])
     def listIterator(self):
-        it = _TestImplemIterator(self)
-        return it
+        return _TestImplemIterator(self)
 
     # TODO cover this case of listIterator.
     @java_method(signature(JListIterator, [jint]),
                          name='ListIterator')
     def listIteratorI(self, index):
-        it = _TestImplemIterator(self, index)
-        return it
+        return _TestImplemIterator(self, index)
 
 
 from jnius.reflect import autoclass

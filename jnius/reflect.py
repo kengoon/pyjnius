@@ -181,12 +181,10 @@ def log_method(method, name, signature):
 def identify_hierarchy(cls, level, concrete=True):
     supercls = cls.getSuperclass()
     if supercls is not None:
-         for sup, lvl in identify_hierarchy(supercls, level + 1, concrete=concrete):
-             yield sup, lvl # we could use yield from when we drop python2
+        yield from identify_hierarchy(supercls, level + 1, concrete=concrete)
     interfaces = cls.getInterfaces()
     for interface in interfaces or []:
-        for sup, lvl in identify_hierarchy(interface, level + 1, concrete=concrete):
-            yield sup, lvl
+        yield from identify_hierarchy(interface, level + 1, concrete=concrete)
     # all object extends Object, so if this top interface in a hierarchy, yield Object
     if not concrete and cls.isInterface() and not interfaces:
         yield find_javaclass('java.lang.Object'), level +1

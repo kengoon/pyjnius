@@ -59,7 +59,7 @@ if NDKPLATFORM is not None and getenv('LIBLINK'):
 
 # detect platform
 if PLATFORM == 'android':
-    FILES = [fn[:-3] + 'c' for fn in FILES if fn.endswith('pyx')]
+    FILES = [f'{fn[:-3]}c' for fn in FILES if fn.endswith('pyx')]
 
 JAVA=get_java_setup(PLATFORM)
 
